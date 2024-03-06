@@ -1,0 +1,52 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+public class GameManager : MonoBehaviour
+{
+    //Declaramos una variable para almacenar la mejor puntuación
+    public int mejorPuntuacion;
+    //Declaramos otra variable para almacenar la puntuación actual
+    public int puntuacionActual;
+    //Declaramos otra variable para almacenar el nivel actual y lo inicializamos con el nivel 0
+ public int nivelActual = 0;
+    //Declaramos una instancia de GameManager
+    public static GameManager singleton;
+        // Llamamos al método Awake, porque queremos que antes de que comience con Start, lo primero que haga
+     //sea mirar si no hay GameManager y en ese caso crearlo
+     //o mirar si hay más de un GameManager y en este caso borrar todos menos uno
+ void Awake()
+    {
+        //si no tenemos ningún GameManager
+        if (singleton == null)
+        {
+            //nuestro GameManager será éste
+            singleton = this;
+        }
+        //si el GameManager no es este
+        else if (singleton != this)
+        {
+            //Lo destruimos
+            Destroy(gameObject);
+        }
+    }
+    //Para gestionar cuándo pasamos de nivel
+    public void PasarNivel()
+    {
+    }
+    //Para resetear el nivel por si damos con algún obstáculo
+    public void RestartNivel()
+    {
+    }
+    //Para añadir puntuación pasándole la puntuación que tenemos que añadir
+    public void addPuntuacion(int puntuacionToAdd)
+    {
+        //sumamos a nuestra puntuación actual la que le tenemos que añadir
+        puntuacionActual += puntuacionToAdd;
+        //comprobamos si nuestra puntuación actual es mejor que nuestra mejor puntuación
+        if (puntuacionActual > mejorPuntuacion)
+        {
+            //en este caso nuestra mejor puntuación pasaría a ser la actual
+            mejorPuntuacion = puntuacionActual;
+        }
+    }
+}
