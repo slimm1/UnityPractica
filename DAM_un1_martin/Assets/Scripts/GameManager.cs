@@ -34,6 +34,14 @@ public class GameManager : MonoBehaviour
     //Para gestionar cuándo pasamos de nivel
     public void PasarNivel()
     {
+        //sumamos uno a nuestro nivel actual
+        nivelActual++;
+        //Ponemos la bola en la posición inicial
+        FindObjectOfType<BolaController>().ResetBola();
+        //Cargamos el nuevo nivel
+        FindObjectOfType<HellixController>().CargarStage(nivelActual);
+        Debug.Log("Pasamos de nivel");
+
     }
     //Para resetear el nivel por si damos con algún obstáculo
     public void RestartNivel()
@@ -46,6 +54,8 @@ public class GameManager : MonoBehaviour
  //lo hace buscando por todos los objetos y en el momento que encuentra un componente
  //al que esté asociado, en este caso, BolaController, como es nuestra bola, lo coge
  FindObjectOfType<BolaController>().ResetBola();
+        //Al restart nivel, cargamos el nuevo nivel
+        FindObjectOfType<HellixController>().CargarStage(nivelActual);
     }
     //Para añadir puntuación pasándole la puntuación que tenemos que añadir
     //Para añadir puntuación pasándole la puntuación que tenemos que añadir

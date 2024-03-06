@@ -10,28 +10,28 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2c42a94be40c13a44a001ad8309f5cab, type: 3}
-  m_Name: Stage0
+  m_Name: Stage2
   m_EditorClassIdentifier: 
   colorFondoStage: {r: 1, g: 1, b: 1, a: 1}
-  colorParteNivelStage: {r: 0.16015486, g: 0.5754717, b: 0.19825748, a: 1}
-  colorBolaStage: {r: 0.7762631, g: 0.5235849, b: 1, a: 1}
+  colorParteNivelStage: {r: 1, g: 0, b: 0.0094127655, a: 1}
+  colorBolaStage: {r: 0.9169829, g: 0.9339623, b: 0.6740388, a: 1}
   niveles:
   - numeroPartesVisibles: 9
-    numeroDeathPart: 1
+    numeroDeathPart: 3
   - numeroPartesVisibles: 10
-    numeroDeathPart: 2
+    numeroDeathPart: 4
   - numeroPartesVisibles: 8
-    numeroDeathPart: 1
+    numeroDeathPart: 3
   - numeroPartesVisibles: 8
-    numeroDeathPart: 2
+    numeroDeathPart: 4
   - numeroPartesVisibles: 11
-    numeroDeathPart: 2
+    numeroDeathPart: 5
   - numeroPartesVisibles: 9
-    numeroDeathPart: 1
+    numeroDeathPart: 3
   - numeroPartesVisibles: 10
-    numeroDeathPart: 1
+    numeroDeathPart: 5
   - numeroPartesVisibles: 11
-    numeroDeathPart: 2
+    numeroDeathPart: 4
   - numeroPartesVisibles: 8
     numeroDeathPart: 3
   - numeroPartesVisibles: 9
@@ -39,4 +39,4 @@ MonoBehaviour:
   - numeroPartesVisibles: 10
     numeroDeathPart: 3
   - numeroPartesVisibles: 8
-    numeroDeathPart: 1
+    numeroDeathPart: 4
