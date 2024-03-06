@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour
             //Lo destruimos
             Destroy(gameObject);
         }
+        //Cogemos la variable de mejor puntuacion almacenada con PlayerPrefs en el método AddPuntuacion
+         mejorPuntuacion = PlayerPrefs.GetInt("MejorPuntuacion");
     }
     //Para gestionar cuándo pasamos de nivel
     public void PasarNivel()
@@ -36,17 +38,29 @@ public class GameManager : MonoBehaviour
     //Para resetear el nivel por si damos con algún obstáculo
     public void RestartNivel()
     {
+        //lo primero que tenemos que hacer es resetear la puntuacion
+        singleton.puntuacionActual = 0;
+        //y poner la bola en la posición inicial
+        //para ello tenemos que llamar al método ResetBola() que acabamos de crear en BolaController
+        //utilizando FindObjectOfType que nos encuentra el objeto del tipo que le indicamos
+ //lo hace buscando por todos los objetos y en el momento que encuentra un componente
+ //al que esté asociado, en este caso, BolaController, como es nuestra bola, lo coge
+ FindObjectOfType<BolaController>().ResetBola();
     }
+    //Para añadir puntuación pasándole la puntuación que tenemos que añadir
     //Para añadir puntuación pasándole la puntuación que tenemos que añadir
     public void addPuntuacion(int puntuacionToAdd)
     {
         //sumamos a nuestra puntuación actual la que le tenemos que añadir
         puntuacionActual += puntuacionToAdd;
         //comprobamos si nuestra puntuación actual es mejor que nuestra mejor puntuación
-        if (puntuacionActual > mejorPuntuacion)
+ if (puntuacionActual > mejorPuntuacion)
         {
             //en este caso nuestra mejor puntuación pasaría a ser la actual
             mejorPuntuacion = puntuacionActual;
+            //utilizamos la clase PlayersPrefs para almacenar la mejor puntuación
+            //se pone una clave y su valor
+            PlayerPrefs.SetInt("MejorPuntuacion", mejorPuntuacion);
         }
     }
 }
