@@ -1,9 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.SocialPlatforms;
+
 public class BolaController : MonoBehaviour
 {
+    //Añadimos las variables que necesitamos para la función de super velocidad
+    //Primero declaramos la variable para saber cuántas veces hemos pasado por un stage sin tocar nada
+    [HideInInspector]
+ public int pasosPerfectos;
+    //Declaramos una variable para saber cuánta velocidad añadirle a la bola cuando estemos en esa super velocidad
+ //y lo inicializamos a 8 por ejemplo
+ public float superVelocidad = 8;
+    //Declaramos una variable para saber si estamos en esa super velocidad o no
+    private bool esSuperVelocidad;
+    //Declaramos una variable para saber a partir de qué número de pasos de discos perfectos activamos la super velocidad
+ public int numeroPasosPerfectos = 3;
     //Creamos un RigidBody
     public Rigidbody rb;
     //Necesitamos un impulso para controlar cuánto bota la bola
@@ -29,28 +44,57 @@ public class BolaController : MonoBehaviour
         {
             return;
         }
-        //Vamos a crear un objeto DeathPart que sólo se va a asignar si la bola choca con un quesito rojo
-        //es decir, si choca con un componente de tipo DeathPart
-        DeathPart deathpart = colision.transform.GetComponent<DeathPart>();
-        //Si chocamos con un quesito rojo
-        if (deathpart)
+        //Hacemos una comprobación para saber si estamos en super velocidad
+        //y con lo que nos hemos chocado no es nuestro disco de Goal (el último disco)
+        if (esSuperVelocidad && !colision.transform.GetComponent<GoalController>())
         {
-            //reseteamos el nivel
-            GameManager.singleton.RestartNivel();
+            //si entra es que estamos en super velocidad y hemos chocado con un disco de por medio
+        //destruimos el disco entero (nosotros chocamos con los quesitos así que tenemos que destruir el padre)
+ //y ponemos que se destruya en 0.2 segundos
+ Destroy(colision.transform.parent.gameObject, 0.2f);
         }
-
+        else
+        {
+            //Vamos a crear un objeto DeathPart que sólo se va a asignar si la bola choca con un quesito rojo
+             //es decir, si choca con un componente de tipo DeathPart
+             DeathPart deathpart = colision.transform.GetComponent<DeathPart>();
+            //Si chocamos con un quesito rojo
+            if (deathpart)
+            {
+                //reseteamos el nivel
+                GameManager.singleton.RestartNivel();
+            }
+        }
         //Cuando colisionemos con algo, le añadimos velocidad de Vector3 a cero para evitar problemas de velocidad al colisionar
-        //Vector3 son las tres coordenadas en cuanto a posicion
-        rb.velocity = Vector3.zero;
+ //Vector3 son las tres coordenadas en cuanto a posicion
+ rb.velocity = Vector3.zero;
         //Cuando choque queremos que vaya hacia arriba, por lo que le añadimos fuerza en el eje de la Y queriendo que vaya para arriba
-        //lo que hemos declarado en fuerzaImpulso
-        //El ForceMode Impulse añade el impulso del rigibody usando su masa
-        rb.AddForce(Vector3.up * fuerzaImpulso, ForceMode.Impulse);
+ //lo que hemos declarado en fuerzaImpulso
+ //El ForceMode Impulse añade el impulso del rigibody usando su masa
+ rb.AddForce(Vector3.up * fuerzaImpulso, ForceMode.Impulse);
         //cuando ya ha botado una vez ponemos el boolean a true
         ignorarSiguienteColision = true;
-        //Llamamos al método de permitirSiguienteColision() para que vuelva a botar la bola pasados 0.2 ms
-        Invoke("PermitirSiguienteColision", 0.2f);
+        //LLamamos al método de permitirSiguienteColision() para que vuelva a botar la bola pasados 0.2 ms
+ Invoke("PermitirSiguienteColision", 0.2f);
+        //Si choco con algo tenemos que poner el número de pasos perfectos a cero y la super velocidad a false
+ numeroPasosPerfectos = 0;
+        esSuperVelocidad = false;
     }
+    //Utilizamos el método Update para activar la super velocidad en caso de que pasemos más de dos discos perfectos
+ private void Update()
+    {
+        if (pasosPerfectos >= numeroPasosPerfectos && !esSuperVelocidad)
+        {
+            //si el número de pasos perfectos que hemos hecho es mayor o igual que el que hemos establecido
+        //y no estamos en super velocidad, la activamos
+ esSuperVelocidad = true;
+            //y le sumamos a la velocidad actual, el extra que queremos para que tenga super velocidad
+            //almacenado en la variable float superVelocidad
+            //es decir, cuando vaya hacia abajo, poenmos el impulso del rigidBody a esa cantidad
+        rb.AddForce(Vector3.down * superVelocidad, ForceMode.Impulse);
+        }
+    }
+
     //Para controlar que pueda volver a botar pasados unos cuantos segundos
     private void PermitirSiguienteColision()
     {

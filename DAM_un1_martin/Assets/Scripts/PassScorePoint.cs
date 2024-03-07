@@ -8,5 +8,7 @@ public class PassScorePoint : MonoBehaviour
     {
         //Añadimos 1 a la puntuación
         GameManager.singleton.addPuntuacion(1);
+        //Añadimos 1 al número de pasos perfectos de discos
+        FindObjectOfType<BolaController>().pasosPerfectos++;
     }
 }
